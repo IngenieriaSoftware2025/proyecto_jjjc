@@ -8,6 +8,7 @@ use Controllers\RegistroController;
 use Controllers\PermisosController;
 use Controllers\AplicacionController;
 use Controllers\ClienteController;
+use Controllers\InventarioCelularController;
 use Controllers\MarcaCelularController;
 
 $router = new Router();
@@ -53,6 +54,16 @@ $router->post('/clientes/guardar', [ClienteController::class,'guardarAPI']);
 $router->post('/clientes/buscar', [ClienteController::class,'buscarAPI']);
 $router->post('/clientes/modificar', [ClienteController::class,'modificarAPI']);
 $router->get('/clientes/eliminar', [ClienteController::class,'eliminarAPI']);
+
+
+//RUTAS PARA INVENTARIO
+$router->get('/inventario', [InventarioCelularController::class,'renderizarPagina']);
+$router->post('/inventario/guardar', [InventarioCelularController::class,'guardarAPI']);
+$router->post('/inventario/buscar', [InventarioCelularController::class,'buscarAPI']);
+$router->post('/inventario/modificar', [InventarioCelularController::class,'modificarAPI']);
+$router->get('/inventario/eliminar', [InventarioCelularController::class,'eliminarAPI']);
+$router->post('/inventario/marcas', [InventarioCelularController::class,'obtenerMarcasAPI']);
+
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

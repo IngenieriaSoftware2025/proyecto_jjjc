@@ -9,7 +9,8 @@ module.exports = {
     'js/permisos/index' : './src/js/permisos/index.js',
     'js/aplicaciones/index' : './src/js/aplicaciones/index.js',
     'js/marcas/index' : './src/js/marcas/index.js',
-    'js/clientes/index' : './src/js/clientes/index.js'
+    'js/clientes/index' : './src/js/clientes/index.js',
+    'js/inventario/index' : './src/js/inventario/index.js'
 
   },
   output: {
