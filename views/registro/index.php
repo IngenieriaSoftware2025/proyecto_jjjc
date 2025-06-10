@@ -49,14 +49,18 @@
             margin-top: 0.25rem;
         }
 
-        .form-control:focus {
-            border-color: #84fab0;
-            box-shadow: 0 0 0 0.2rem rgba(132, 250, 176, 0.25);
+        .foto-usuario {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #84fab0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
+        
+        .foto-usuario:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
         }
     </style>
 </head>
@@ -162,8 +166,7 @@
 
                                     <div class="d-flex justify-content-center mb-3">
                                         <button type="submit" id="BtnGuardar" class="btn btn-success btn-lg gradient-custom-4 text-body">
-                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                            <span class="btn-text">Registrar</span>
+                                            Registrar
                                         </button>
                                     </div>
 
@@ -177,6 +180,44 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- NUEVA SECCIÓN PARA BUSCAR USUARIOS -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body">
+                                <h3 class="text-center mb-4">Usuarios Registrados</h3>
+                                
+                                <div class="d-flex justify-content-center mb-3">
+                                    <button type="button" id="BtnBuscarUsuarios" class="btn btn-primary">
+                                        Buscar Usuarios
+                                    </button>
+                                </div>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Foto</th>
+                                                <th>Nombres</th>
+                                                <th>Apellidos</th>
+                                                <th>Teléfono</th>
+                                                <th>DPI</th>
+                                                <th>Correo</th>
+                                                <th>Fecha Registro</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TablaUsuarios">
+                                            <!-- Los usuarios se cargarán aquí -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </section>

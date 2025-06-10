@@ -30,19 +30,39 @@
                      <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/proyecto_jjjc/registro"><i class="bi bi-house-fill me-2"></i>Registro</a>
                     </li>
-  
+                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/proyecto_jjjc/aplicaciones"><i class="bi bi-gear me-2"></i>Aplicaciones</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/proyecto_jjjc/permisos"><i class="bi bi-shield-check me-2"></i>Permisos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/proyecto_jjjc/marcas">
+                            <i class="bi bi-phone me-2"></i>Marcas
+                        </a>
+                    </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/proyecto_jjjc/clientes">
+        <i class="bi bi-people me-2"></i>Clientes
+    </a>
+</li>
                     <div class="nav-item dropdown " >
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-gear me-2"></i>Dropdown
+                            <i class="bi bi-gear me-2"></i>Administración
                         </a>
                         <ul class="dropdown-menu  dropdown-menu-dark "id="dropwdownRevision" style="margin: 0;">
-                            <!-- <h6 class="dropdown-header">Información</h6> -->
+                            <h6 class="dropdown-header">Gestión</h6>
                             <li>
-                                <a class="dropdown-item nav-link text-white " href="/aplicaciones/nueva"><i class="ms-lg-0 ms-2 bi bi-plus-circle me-2"></i>Subitem</a>
+                                <a class="dropdown-item nav-link text-white " href="/proyecto_jjjc/aplicaciones"><i class="ms-lg-0 ms-2 bi bi-gear me-2"></i>Aplicaciones</a>
                             </li>
-                        
-                    
-                        
+                            <li>
+                                <a class="dropdown-item nav-link text-white " href="/proyecto_jjjc/permisos"><i class="ms-lg-0 ms-2 bi bi-shield-check me-2"></i>Permisos</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <h6 class="dropdown-header">Usuarios</h6>
+                            <li>
+                                <a class="dropdown-item nav-link text-white " href="/proyecto_jjjc/registro"><i class="ms-lg-0 ms-2 bi bi-person-plus me-2"></i>Registrar Usuario</a>
+                            </li>
                         </ul>
                     </div> 
 

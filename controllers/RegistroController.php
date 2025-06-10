@@ -157,7 +157,6 @@ class RegistroController extends ActiveRecord
         }
         
         $_POST['usuario_token'] = uniqid();
-        $dpi = $_POST['usuario_dpi'];
         $_POST['usuario_fecha_creacion'] = '';
         $_POST['usuario_fecha_contra'] = '';
         
@@ -166,10 +165,6 @@ class RegistroController extends ActiveRecord
         $fileTmpName = $file['tmp_name'];
         $fileSize = $file['size'];
         $fileError = $file['error'];
-        
-      
-        
-        
         
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
   
@@ -197,14 +192,14 @@ class RegistroController extends ActiveRecord
         }
         
         if ($fileError === 0) {
-                $ruta = "storage/fotosUsuarios/$dpi.$fileExtension";
-                $subido = move_uploaded_file($file['tmp_name'], __DIR__ . "../../" . $ruta);
+                // USAR EL DPI COMPLETO para nombrar el archivo
+                $dpiCompleto = $_POST['usuario_dpi'];
+                $ruta = "storage/fotosUsuarios/$dpiCompleto.$fileExtension";
+                $subido = move_uploaded_file($file['tmp_name'], __DIR__ . "/../../" . $ruta);
                 
                 if ($subido) {
                     
                     $_POST['usuario_contra'] = password_hash($_POST['usuario_contra'], PASSWORD_DEFAULT);
-                    $foto = base64_encode(file_get_contents(__DIR__ . '/../' . $ruta));
-                    $_SESSION['user']->foto = $foto;
                     $usuario = new Usuarios($_POST);
                     $usuario->usuario_fotografia = $ruta;
                     $resultado = $usuario->crear();
@@ -241,9 +236,91 @@ class RegistroController extends ActiveRecord
                 ]);
                 exit;
             }
-        
-            
-
     }
     
+    // MÉTODO PARA BUSCAR USUARIOS
+    public static function buscarUsuariosAPI()
+    {
+        getHeadersApi();
+        
+        try {
+            $usuarios = Usuarios::all();
+            
+            if (!empty($usuarios)) {
+                http_response_code(200);
+                echo json_encode([
+                    'codigo' => 1,
+                    'mensaje' => 'Usuarios encontrados: ' . count($usuarios),
+                    'data' => $usuarios
+                ]);
+            } else {
+                http_response_code(200);
+                echo json_encode([
+                    'codigo' => 0,
+                    'mensaje' => 'No se encontraron usuarios',
+                    'data' => []
+                ]);
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                'codigo' => 0,
+                'mensaje' => 'Error al buscar usuarios: ' . $e->getMessage()
+            ]);
+        }
+        exit;
+    }
+    
+  public static function mostrarImagen()
+{
+    $dpi = $_GET['dpi'] ?? null;
+    
+    if (!$dpi) {
+        http_response_code(400);
+        echo json_encode([
+            'codigo' => 0,
+            'mensaje' => 'DPI no proporcionado'
+        ]);
+        exit;
+    }
+    
+    // Buscar el archivo de imagen por DPI
+    $directorio = __DIR__ . "/../../storage/fotosUsuarios/";
+    $extensiones = ['jpg', 'jpeg', 'png'];
+    
+    foreach ($extensiones as $ext) {
+        $rutaArchivo = $directorio . $dpi . '.' . $ext;
+        
+        if (file_exists($rutaArchivo)) {
+            // Establecer el header correcto según la extensión
+            switch($ext) {
+                case 'jpg':
+                case 'jpeg':
+                    header('Content-Type: image/jpeg');
+                    break;
+                case 'png':
+                    header('Content-Type: image/png');
+                    break;
+            }
+            
+            // Headers adicionales para cache
+            header('Cache-Control: public, max-age=3600');
+            header('Content-Length: ' . filesize($rutaArchivo));
+            
+            // Enviar la imagen
+            readfile($rutaArchivo);
+            exit;
+        }
+    }
+    
+    // Si no se encuentra la imagen, devolver error 404
+    http_response_code(404);
+    echo json_encode([
+        'codigo' => 0,
+        'mensaje' => 'Imagen no encontrada'
+    ]);
+    exit;
+}
+
+
 }

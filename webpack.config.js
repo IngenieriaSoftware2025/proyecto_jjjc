@@ -5,7 +5,11 @@ module.exports = {
   entry: {
     'js/app' : './src/js/app.js',
     'js/inicio' : './src/js/inicio.js',
-    'js/registro/index' : './src/js/registro/index.js'
+    'js/registro/index' : './src/js/registro/index.js',
+    'js/permisos/index' : './src/js/permisos/index.js',
+    'js/aplicaciones/index' : './src/js/aplicaciones/index.js',
+    'js/marcas/index' : './src/js/marcas/index.js',
+    'js/clientes/index' : './src/js/clientes/index.js'
 
   },
   output: {
