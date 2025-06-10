@@ -54,7 +54,9 @@ permiso_clave VARCHAR (250) NOT NULL,
 permiso_desc VARCHAR (250) NOT NULL,
 permiso_fecha DATE DEFAULT TODAY,
 permiso_situacion SMALLINT DEFAULT 1,
-FOREIGN KEY (permiso_app_id) REFERENCES aplicacion(app_id) 
+permiso_rol INT NOT NULL,
+FOREIGN KEY (permiso_app_id) REFERENCES aplicacion(app_id),
+FOREIGN KEY (permiso_rol) REFERENCES rol(rol_id)
 );
 
 CREATE TABLE asig_permisos(
@@ -169,4 +171,25 @@ CREATE TABLE ordenes_reparacion (
     FOREIGN KEY (orden_cli_id) REFERENCES clientes(cli_id),--TABLA CLIENTES
     FOREIGN KEY (orden_empleado_id) REFERENCES empleados(empleado_id),--TABLA EMPLEADOS
     FOREIGN KEY (orden_serv_id) REFERENCES tipo_servicio(serv_id)--TABLA TIPO_SERVICIO
+);
+
+
+
+--Tabla de roles
+CREATE TABLE rol(
+    rol_id INT AUTO_INCREMENT PRIMARY KEY,
+    rol_nombre VARCHAR(75),
+    rol_nombre_ct VARCHAR(25),
+    rol_app INTEGER,
+    rol_situacion SMALLINT DEFAULT 1,
+    FOREIGN KEY (rol_app) REFERENCES aplicacion(app_id)
+);
+
+CREATE TABLE permiso (
+    permiso_id INT AUTO_INCREMENT PRIMARY KEY,
+    permiso_usuario INTEGER,
+    permiso_rol INTEGER,
+    permiso_situacion SMALLINT DEFAULT 1,
+    FOREIGN KEY (permiso_usuario) REFERENCES usuario (usu_id),
+    FOREIGN KEY (permiso_rol) REFERENCES rol (rol_id)
 );

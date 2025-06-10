@@ -10,7 +10,8 @@ module.exports = {
     'js/aplicaciones/index' : './src/js/aplicaciones/index.js',
     'js/marcas/index' : './src/js/marcas/index.js',
     'js/clientes/index' : './src/js/clientes/index.js',
-    'js/inventario/index' : './src/js/inventario/index.js'
+    'js/inventario/index' : './src/js/inventario/index.js',
+    'js/login/index' : './src/js/login/index.js'
 
   },
   output: {

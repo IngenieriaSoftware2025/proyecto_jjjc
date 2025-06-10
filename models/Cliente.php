@@ -13,7 +13,7 @@ class Cliente extends ActiveRecord {
         'cli_correo',
         'cli_direccion',
         'cli_estado',
-        'cli_fecha_registro'
+        //'cli_fecha_registro'
     ];
 
     public static $idTabla = 'cli_id';
@@ -37,6 +37,6 @@ class Cliente extends ActiveRecord {
         $this->cli_correo = $args['cli_correo'] ?? '';
         $this->cli_direccion = $args['cli_direccion'] ?? '';
         $this->cli_estado = $args['cli_estado'] ?? 1;
-        $this->cli_fecha_registro = $args['cli_fecha_registro'] ?? date('Y-m-d H:i:s');
+        $this->cli_fecha_registro = $args['cli_fecha_registro'] ?? '';
     }
 }

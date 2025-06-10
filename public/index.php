@@ -65,5 +65,12 @@ $router->get('/inventario/eliminar', [InventarioCelularController::class,'elimin
 $router->post('/inventario/marcas', [InventarioCelularController::class,'obtenerMarcasAPI']);
 
 
+//RUTAS LOGIN
+$router->get('/login', [LoginController::class,'renderizarPagina']);
+$router->post('/login/autenticar', [LoginController::class,'autenticarAPI']);
+$router->get('/login/verificar', [LoginController::class,'verificarSesionAPI']);
+$router->post('/login/cerrar', [LoginController::class,'cerrarSesionAPI']);
+$router->get('/logout', [LoginController::class,'cerrarSesion']); // Ruta directa para cerrar sesión
+
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();
