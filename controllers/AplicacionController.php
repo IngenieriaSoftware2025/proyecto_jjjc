@@ -99,7 +99,22 @@ class AplicacionController extends ActiveRecord
         getHeadersApi();
         
         try {
-            $aplicaciones = Aplicacion::where('app_situacion', 1);
+             // Usar consulta SQL directa para la fecha
+            $sql = "SELECT app_id, app_nombre_largo, app_nombre_medium, app_nombre_corto, 
+                           app_fecha_creacion, app_situacion 
+                    FROM aplicacion 
+                    WHERE app_situacion = 1";
+            
+            $aplicaciones = Aplicacion::fetchArray($sql);
+            
+            // Formatear fechas
+            if (!empty($aplicaciones)) {
+                foreach ($aplicaciones as &$aplicacion) {
+                    if (!empty($aplicacion['app_fecha_creacion'])) {
+                        $aplicacion['app_fecha_creacion'] = date('d/m/Y', strtotime($aplicacion['app_fecha_creacion']));
+                    }
+                }
+            }
             
             if (!empty($aplicaciones)) {
                 http_response_code(200);

@@ -19,8 +19,8 @@ class Usuarios extends ActiveRecord {
         'usuario_correo',
         'usuario_contra',
         'usuario_token',
-        'usuario_fecha_creacion',
-        'usuario_fecha_contra',
+        //'usuario_fecha_creacion',
+        //'usuario_fecha_contra',
         'usuario_fotografia',
         'usuario_situacion'
     ];

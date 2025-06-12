@@ -10,7 +10,7 @@ class Aplicacion extends ActiveRecord {
         'app_nombre_largo',
         'app_nombre_medium',
         'app_nombre_corto',
-        'app_fecha_creacion',
+        //'app_fecha_creacion',
         'app_situacion'
     ];
 

@@ -10,7 +10,7 @@ class AsigPermiso extends ActiveRecord {
         'asignacion_usuario_id',
         'asignacion_app_id',
         'asignacion_permiso_id',
-        'asignacion_fecha',
+        //'asignacion_fecha',
         'asignacion_usuario_asigno',
         'asignacion_motivo',
         'asignacion_situacion'

@@ -91,6 +91,16 @@
             color: #764ba2;
             text-decoration: underline;
         }
+
+        .custom-title-class {
+            color: #2c3e50 !important;
+            font-weight: bold !important;
+        }
+
+        .custom-text-class {
+            color: #34495e !important;
+            font-size: 16px !important;
+        }
     </style>
 </head>
 <body>

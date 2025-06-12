@@ -5,38 +5,49 @@ namespace Controllers;
 use Exception;
 use MVC\Router;
 use Model\ActiveRecord;
-use Model\MarcaCelular;
+use Model\TipoServicio;
 
-class MarcaCelularController extends ActiveRecord
+class TipoServicioController extends ActiveRecord
 {
 
     public static function renderizarPagina(Router $router)
     {
-        $router->render('marcas/index', []);
+        $router->render('servicios/index', []);
     }
 
     public static function guardarAPI()
     {
         getHeadersApi();
         
-        // Sanitizar nombre de la marca
-        $_POST['marca_nombre'] = ucwords(strtolower(trim(htmlspecialchars($_POST['marca_nombre']))));
+        // Sanitizar nombre del servicio
+        $_POST['serv_nombre'] = ucwords(strtolower(trim(htmlspecialchars($_POST['serv_nombre']))));
         
-        $cantidad_nombre = strlen($_POST['marca_nombre']);
+        $cantidad_nombre = strlen($_POST['serv_nombre']);
         
-        if ($cantidad_nombre < 2) {
+        if ($cantidad_nombre < 3) {
             http_response_code(400);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'El nombre de la marca debe tener más de 1 caracteres'
+                'mensaje' => 'El nombre del servicio debe tener más de 2 caracteres'
+            ]);
+            exit;
+        }
+        
+        // Validar precio
+        $_POST['serv_precio'] = filter_var($_POST['serv_precio'], FILTER_VALIDATE_FLOAT);
+        if ($_POST['serv_precio'] <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'codigo' => 0,
+                'mensaje' => 'El precio debe ser mayor a 0'
             ]);
             exit;
         }
         
         // Sanitizar descripción
-        $_POST['marca_descripcion'] = ucfirst(strtolower(trim(htmlspecialchars($_POST['marca_descripcion']))));
+        $_POST['serv_descripcion'] = ucfirst(strtolower(trim(htmlspecialchars($_POST['serv_descripcion']))));
         
-        if (strlen($_POST['marca_descripcion']) < 5) {
+        if (strlen($_POST['serv_descripcion']) < 5) {
             http_response_code(400);
             echo json_encode([
                 'codigo' => 0,
@@ -45,34 +56,32 @@ class MarcaCelularController extends ActiveRecord
             exit;
         }
         
-        // Verificar si la marca ya existe
-        $marcaExistente = MarcaCelular::where('marca_nombre', $_POST['marca_nombre']);
-        if (!empty($marcaExistente)) {
+        // Verificar si el servicio ya existe
+        $servicioExistente = TipoServicio::where('serv_nombre', $_POST['serv_nombre']);
+        if (!empty($servicioExistente)) {
             http_response_code(400);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'Ya existe una marca con ese nombre'
+                'mensaje' => 'Ya existe un servicio con ese nombre'
             ]);
             exit;
         }
         
-        $_POST['marca_fecha_creacion'] = '';
-        
-        $marca = new MarcaCelular($_POST);
-        $resultado = $marca->crear();
+        $servicio = new TipoServicio($_POST);
+        $resultado = $servicio->crear();
 
         if($resultado['resultado'] == 1){
             http_response_code(200);
             echo json_encode([
                 'codigo' => 1,
-                'mensaje' => 'Marca registrada correctamente',
+                'mensaje' => 'Servicio registrado correctamente',
             ]);
             exit;
         } else {
             http_response_code(500);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'Error al registrar la marca',
+                'mensaje' => 'Error al registrar el servicio',
             ]);
             exit;
         }
@@ -83,34 +92,20 @@ class MarcaCelularController extends ActiveRecord
         getHeadersApi();
         
         try {
-             // Usar consulta SQL directa para la fecha
-            $sql = "SELECT marca_id, marca_nombre, marca_descripcion, marca_estado, marca_fecha_creacion 
-                    FROM marc_cel 
-                    WHERE marca_estado = 1";
+            $servicios = TipoServicio::where('serv_estado', 1);
             
-            $marcas = MarcaCelular::fetchArray($sql);
-            
-            // Formatear fechas
-            if (!empty($marcas)) {
-                foreach ($marcas as &$marca) {
-                    if (!empty($marca['marca_fecha_creacion'])) {
-                        $marca['marca_fecha_creacion'] = date('d/m/Y', strtotime($marca['marca_fecha_creacion']));
-                    }
-                }
-            }
-            
-            if (!empty($marcas)) {
+            if (!empty($servicios)) {
                 http_response_code(200);
                 echo json_encode([
                     'codigo' => 1,
-                    'mensaje' => 'Marcas encontradas: ' . count($marcas),
-                    'data' => $marcas
+                    'mensaje' => 'Servicios encontrados: ' . count($servicios),
+                    'data' => $servicios
                 ]);
             } else {
                 http_response_code(200);
                 echo json_encode([
                     'codigo' => 0,
-                    'mensaje' => 'No se encontraron marcas',
+                    'mensaje' => 'No se encontraron servicios',
                     'data' => []
                 ]);
             }
@@ -118,7 +113,7 @@ class MarcaCelularController extends ActiveRecord
             http_response_code(500);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'Error al buscar marcas: ' . $e->getMessage()
+                'mensaje' => 'Error al buscar servicios: ' . $e->getMessage()
             ]);
         }
         exit;
@@ -128,50 +123,52 @@ class MarcaCelularController extends ActiveRecord
     {
         getHeadersApi();
         
-        if (empty($_POST['marca_id'])) {
+        if (empty($_POST['serv_id'])) {
             http_response_code(400);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'ID de la marca es requerido'
+                'mensaje' => 'ID del servicio es requerido'
             ]);
             exit;
         }
         
         // Sanitizar datos igual que en guardar
-        $_POST['marca_nombre'] = ucwords(strtolower(trim(htmlspecialchars($_POST['marca_nombre']))));
-        $_POST['marca_descripcion'] = ucfirst(strtolower(trim(htmlspecialchars($_POST['marca_descripcion']))));
+        $_POST['serv_nombre'] = ucwords(strtolower(trim(htmlspecialchars($_POST['serv_nombre']))));
+        $_POST['serv_precio'] = filter_var($_POST['serv_precio'], FILTER_VALIDATE_FLOAT);
+        $_POST['serv_descripcion'] = ucfirst(strtolower(trim(htmlspecialchars($_POST['serv_descripcion']))));
         
         // Verificar si el nombre ya existe (excluyendo el actual)
-        $marcaExistente = MarcaCelular::fetchFirst("SELECT * FROM marc_cel WHERE marca_nombre = '{$_POST['marca_nombre']}' AND marca_id != {$_POST['marca_id']}");
-        if ($marcaExistente) {
+        $servicioExistente = TipoServicio::fetchFirst("SELECT * FROM tipo_servicio WHERE serv_nombre = '{$_POST['serv_nombre']}' AND serv_id != {$_POST['serv_id']}");
+        if ($servicioExistente) {
             http_response_code(400);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'Ya existe otra marca con ese nombre'
+                'mensaje' => 'Ya existe otro servicio con ese nombre'
             ]);
             exit;
         }
         
         try {
             // Usar consulta SQL directa para actualizar
-            $sql = "UPDATE marc_cel SET 
-                    marca_nombre = '{$_POST['marca_nombre']}',
-                    marca_descripcion = '{$_POST['marca_descripcion']}'
-                    WHERE marca_id = {$_POST['marca_id']}";
+            $sql = "UPDATE tipo_servicio SET 
+                    serv_nombre = '{$_POST['serv_nombre']}',
+                    serv_precio = {$_POST['serv_precio']},
+                    serv_descripcion = '{$_POST['serv_descripcion']}'
+                    WHERE serv_id = {$_POST['serv_id']}";
             
-            $resultado = MarcaCelular::getDB()->exec($sql);
+            $resultado = TipoServicio::getDB()->exec($sql);
 
             if($resultado >= 0){
                 http_response_code(200);
                 echo json_encode([
                     'codigo' => 1,
-                    'mensaje' => 'Marca modificada correctamente',
+                    'mensaje' => 'Servicio modificado correctamente',
                 ]);
             } else {
                 http_response_code(500);
                 echo json_encode([
                     'codigo' => 0,
-                    'mensaje' => 'Error al modificar la marca',
+                    'mensaje' => 'Error al modificar el servicio',
                 ]);
             }
         } catch (Exception $e) {
@@ -194,27 +191,27 @@ class MarcaCelularController extends ActiveRecord
             http_response_code(400);
             echo json_encode([
                 'codigo' => 0,
-                'mensaje' => 'ID de la marca es requerido'
+                'mensaje' => 'ID del servicio es requerido'
             ]);
             exit;
         }
         
         try {
-            // Cambiar estado a 0 (eliminación lógica) - NO eliminar físicamente
-            $sql = "UPDATE marc_cel SET marca_estado = 0 WHERE marca_id = $id AND marca_estado = 1";
-            $resultado = MarcaCelular::getDB()->exec($sql);
+            // Cambiar estado a 0 -- NO eliminar físicamente
+            $sql = "UPDATE tipo_servicio SET serv_estado = 0 WHERE serv_id = $id AND serv_estado = 1";
+            $resultado = TipoServicio::getDB()->exec($sql);
             
             if($resultado > 0){
                 http_response_code(200);
                 echo json_encode([
                     'codigo' => 1,
-                    'mensaje' => 'Marca eliminada correctamente (estado cambiado a inactivo)',
+                    'mensaje' => 'Servicio eliminado correctamente (estado cambiado a inactivo)',
                 ]);
             } else {
                 http_response_code(400);
                 echo json_encode([
                     'codigo' => 0,
-                    'mensaje' => 'No se pudo eliminar la marca (puede que ya esté eliminada)',
+                    'mensaje' => 'No se pudo eliminar el servicio (puede que ya esté eliminado)',
                 ]);
             }
         } catch (Exception $e) {

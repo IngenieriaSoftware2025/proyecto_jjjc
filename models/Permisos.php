@@ -10,7 +10,7 @@ class Permisos extends ActiveRecord {
         'permiso_nombre',
         'permiso_clave',
         'permiso_desc',
-        'permiso_fecha',
+        //'permiso_fecha',
         'permiso_situacion'
     ];
 

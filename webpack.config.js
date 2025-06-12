@@ -11,7 +11,10 @@ module.exports = {
     'js/marcas/index' : './src/js/marcas/index.js',
     'js/clientes/index' : './src/js/clientes/index.js',
     'js/inventario/index' : './src/js/inventario/index.js',
-    'js/login/index' : './src/js/login/index.js'
+    'js/login/index' : './src/js/login/index.js',
+    'js/empleados/index' : './src/js/empleados/index.js',
+    'js/servicios/index' : './src/js/servicios/index.js',
+    'js/asigPermisos/index' : './src/js/asigPermisos/index.js'
 
   },
   output: {

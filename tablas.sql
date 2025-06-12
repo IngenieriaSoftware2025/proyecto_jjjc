@@ -31,8 +31,8 @@ usuario_dpi VARCHAR (13) NOT NULL,
 usuario_correo VARCHAR (100) NOT NULL,
 usuario_contra LVARCHAR (1056) NOT NULL,
 usuario_token LVARCHAR (1056) NOT NULL,
-usuario_fecha_creacion DATE DEFAULT TODAY,
-usuario_fecha_contra DATE DEFAULT TODAY,
+usuario_fecha_creacion DATETIME YEAR TO SECOND DEFAULT CURRENT YEAR TO SECOND,
+usuario_fecha_contra DATETIME YEAR TO SECOND DEFAULT CURRENT YEAR TO SECOND,
 usuario_fotografia LVARCHAR (2056),
 usuario_situacion SMALLINT DEFAULT 1
 );
@@ -42,7 +42,7 @@ app_id SERIAL PRIMARY KEY,
 app_nombre_largo VARCHAR (250) NOT NULL,
 app_nombre_medium VARCHAR (150) NOT NULL,
 app_nombre_corto VARCHAR (50) NOT NULL,
-app_fecha_creacion DATE DEFAULT TODAY,
+app_fecha_creacion DATETIME YEAR TO SECOND DEFAULT CURRENT YEAR TO SECOND,
 app_situacion SMALLINT DEFAULT 1
 );
 
@@ -52,11 +52,9 @@ permiso_app_id INT NOT NULL,
 permiso_nombre VARCHAR (150) NOT NULL,
 permiso_clave VARCHAR (250) NOT NULL,
 permiso_desc VARCHAR (250) NOT NULL,
-permiso_fecha DATE DEFAULT TODAY,
+permiso_fecha DATETIME YEAR TO SECOND DEFAULT CURRENT YEAR TO SECOND,
 permiso_situacion SMALLINT DEFAULT 1,
-permiso_rol INT NOT NULL,
 FOREIGN KEY (permiso_app_id) REFERENCES aplicacion(app_id),
-FOREIGN KEY (permiso_rol) REFERENCES rol(rol_id)
 );
 
 CREATE TABLE asig_permisos(
@@ -64,7 +62,8 @@ asignacion_id SERIAL PRIMARY KEY,
 asignacion_usuario_id INT NOT NULL,
 asignacion_app_id INT NOT NULL,
 asignacion_permiso_id INT NOT NULL,
-asignacion_fecha DATE DEFAULT TODAY,
+asignacion_fecha DATETIME YEAR TO SECOND DEFAULT CURRENT YEAR TO SECOND,
+asignacion_quitar_fechaPermiso DATETIME YEAR TO SECOND DEFAULT CURRENT YEAR TO SECOND,
 asignacion_usuario_asigno INT NOT NULL,
 asignacion_motivo VARCHAR (250) NOT NULL,
 asignacion_situacion SMALLINT DEFAULT 1,
@@ -79,6 +78,7 @@ historial_usuario_id INT NOT NULL,
 historial_fecha DATETIME YEAR TO MINUTE,
 historial_ruta INT NOT NULL,
 historial_ejecucion LVARCHAR (1056) NOT NULL,
+hsitorial_status SMALLINT,
 historial_situacion SMALLINT DEFAULT 1,
 FOREIGN KEY (historial_usuario_id) REFERENCES usuario(usuario_id),
 FOREIGN KEY (historial_ruta) REFERENCES rutas(ruta_id)
@@ -174,22 +174,3 @@ CREATE TABLE ordenes_reparacion (
 );
 
 
-
---Tabla de roles
-CREATE TABLE rol(
-    rol_id INT AUTO_INCREMENT PRIMARY KEY,
-    rol_nombre VARCHAR(75),
-    rol_nombre_ct VARCHAR(25),
-    rol_app INTEGER,
-    rol_situacion SMALLINT DEFAULT 1,
-    FOREIGN KEY (rol_app) REFERENCES aplicacion(app_id)
-);
-
-CREATE TABLE permiso (
-    permiso_id INT AUTO_INCREMENT PRIMARY KEY,
-    permiso_usuario INTEGER,
-    permiso_rol INTEGER,
-    permiso_situacion SMALLINT DEFAULT 1,
-    FOREIGN KEY (permiso_usuario) REFERENCES usuario (usu_id),
-    FOREIGN KEY (permiso_rol) REFERENCES rol (rol_id)
-);

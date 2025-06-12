@@ -20,6 +20,7 @@ function isAuth() {
         header('Location: /');
     }
 }
+
 function isAuthApi() {
     getHeadersApi();
     session_start();

@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace Controllers;
 
 use Exception;
@@ -156,6 +158,8 @@ class RegistroController extends ActiveRecord
             exit;
         }
         
+
+        
         $_POST['usuario_token'] = uniqid();
         $_POST['usuario_fecha_creacion'] = '';
         $_POST['usuario_fecha_contra'] = '';
@@ -238,13 +242,32 @@ class RegistroController extends ActiveRecord
             }
     }
     
-    // MÉTODO PARA BUSCAR USUARIOS
+    // MÉTODO PARA BUSCAR USUARIOS 
     public static function buscarUsuariosAPI()
     {
         getHeadersApi();
         
         try {
-            $usuarios = Usuarios::all();
+            // Usar consulta SQL directa para la fecha
+            $sql = "SELECT usuario_id, usuario_nom1, usuario_nom2, usuario_ape1, usuario_ape2, 
+                           usuario_tel, usuario_direc, usuario_dpi, usuario_correo, usuario_token,
+                           usuario_fecha_creacion, usuario_fecha_contra, usuario_fotografia, usuario_situacion 
+                    FROM usuario 
+                    WHERE usuario_situacion = 1";
+            
+            $usuarios = Usuarios::fetchArray($sql);
+            
+            // Formatear fechas como en EmpleadoController
+            if (!empty($usuarios)) {
+                foreach ($usuarios as &$u) {
+                    if (!empty($u['usuario_fecha_creacion'])) {
+                        $u['usuario_fecha_creacion'] = date('d/m/Y', strtotime($u['usuario_fecha_creacion']));
+                    }
+                    if (!empty($u['usuario_fecha_contra'])) {
+                        $u['usuario_fecha_contra'] = date('d/m/Y', strtotime($u['usuario_fecha_contra']));
+                    }
+                }
+            }
             
             if (!empty($usuarios)) {
                 http_response_code(200);

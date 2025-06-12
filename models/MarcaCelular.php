@@ -9,7 +9,7 @@ class MarcaCelular extends ActiveRecord {
         'marca_nombre',
         'marca_descripcion',
         'marca_estado',
-        'marca_fecha_creacion'
+        //'marca_fecha_creacion'
     ];
 
     public static $idTabla = 'marca_id';

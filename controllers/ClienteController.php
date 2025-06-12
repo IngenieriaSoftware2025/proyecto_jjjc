@@ -58,12 +58,12 @@ class ClienteController extends ActiveRecord
             exit;
         }
         
-        // Sanitizar NIT
+        // Sanitizar NIT (opcional)
         if (!empty($_POST['cli_nit'])) {
             $_POST['cli_nit'] = trim(htmlspecialchars($_POST['cli_nit']));
         }
         
-        // Sanitizar y validar correo 
+        // Sanitizar y validar correo (opcional)
         if (!empty($_POST['cli_correo'])) {
             $_POST['cli_correo'] = filter_var($_POST['cli_correo'], FILTER_SANITIZE_EMAIL);
             if (!filter_var($_POST['cli_correo'], FILTER_VALIDATE_EMAIL)){
@@ -126,7 +126,22 @@ class ClienteController extends ActiveRecord
         getHeadersApi();
         
         try {
-            $clientes = Cliente::where('cli_estado', 1);
+            // Usar consulta SQL directa para la fecha
+            $sql = "SELECT cli_id, cli_nombres, cli_apellidos, cli_nit, cli_telefono, 
+                           cli_correo, cli_direccion, cli_estado, cli_fecha_registro 
+                    FROM clientes 
+                    WHERE cli_estado = 1";
+            
+            $clientes = Cliente::fetchArray($sql);
+            
+            // Formatear fechas
+            if (!empty($clientes)) {
+                foreach ($clientes as &$cliente) {
+                    if (!empty($cliente['cli_fecha_registro'])) {
+                        $cliente['cli_fecha_registro'] = date('d/m/Y', strtotime($cliente['cli_fecha_registro']));
+                    }
+                }
+            }
             
             if (!empty($clientes)) {
                 http_response_code(200);
@@ -243,7 +258,7 @@ class ClienteController extends ActiveRecord
         }
         
         try {
-            // Cambiar estado a 0 --NO eliminar físicamente
+            // Cambiar estado a 0 (eliminación lógica) - NO eliminar físicamente
             $sql = "UPDATE clientes SET cli_estado = 0 WHERE cli_id = $id AND cli_estado = 1";
             $resultado = Cliente::getDB()->exec($sql);
             

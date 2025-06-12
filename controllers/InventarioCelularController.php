@@ -136,14 +136,25 @@ class InventarioCelularController extends ActiveRecord
         getHeadersApi();
         
         try {
-            // Consulta con JOIN para traer el nombre de la marca
-            $sql = "SELECT i.*, m.marca_nombre 
+            // Consulta con JOIN para traer el nombre de la marca Y formatear fecha
+            $sql = "SELECT i.invent_id, i.invent_modelo, i.invent_marca_id, i.invent_precio_compra,
+                           i.invent_precio_venta, i.invent_cantidad_disponible, i.invent_descripcion,
+                           i.invent_estado, i.invent_fecha_ingreso, m.marca_nombre 
                     FROM invent_cel i 
                     INNER JOIN marc_cel m ON i.invent_marca_id = m.marca_id 
                     WHERE i.invent_estado = 1 
                     ORDER BY i.invent_id DESC";
             
             $inventario = InventarioCelular::fetchArray($sql);
+            
+            // Formatear fechas
+            if (!empty($inventario)) {
+                foreach ($inventario as &$producto) {
+                    if (!empty($producto['invent_fecha_ingreso'])) {
+                        $producto['invent_fecha_ingreso'] = date('d/m/Y', strtotime($producto['invent_fecha_ingreso']));
+                    }
+                }
+            }
             
             if (!empty($inventario)) {
                 http_response_code(200);

@@ -6,7 +6,6 @@ const BtnIniciar = document.getElementById('BtnIniciar');
 
 const login = async (e) => {
     e.preventDefault();
-    
     BtnIniciar.disabled = true;
 
     if (!validarFormulario(FormLogin, [''])) {
@@ -21,47 +20,75 @@ const login = async (e) => {
 
     try {
         const body = new FormData(FormLogin);
-        const url = '/proyecto_jjjc/login/autenticar';
-        
+        const url = '/proyecto_jjjc/login/iniciar';
         const config = {
             method: 'POST',
             body
         };
 
+        console.log('Enviando petición a:', url); // Para debug
+        
         const respuesta = await fetch(url, config);
+        
+        // Verificar si la respuesta es JSON válido
+        const contentType = respuesta.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("La respuesta del servidor no es JSON válido");
+        }
+        
         const data = await respuesta.json();
-        console.log(data);
         const { codigo, mensaje, detalle } = data;
 
         if (codigo == 1) {
-            Swal.fire({
-                title: "¡Éxito!",
+            await Swal.fire({
+                title: 'Éxito',
                 text: mensaje,
-                icon: "success",
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                // Redirigir al dashboard o página principal
-                window.location.href = '/proyecto_jjjc/';
+                icon: 'success',
+                showConfirmButton: true,
+                timer: 1500,
+                timerProgressBar: false,
+                background: '#e0f7fa',
+                customClass: {
+                    title: 'custom-title-class',
+                    text: 'custom-text-class'
+                }
             });
+
+            FormLogin.reset();
+            location.href = '/proyecto_jjjc/inicio';
         } else {
             Swal.fire({
-                title: "Error de Autenticación",
+                title: '¡Error!',
                 text: mensaje,
-                icon: "error"
+                icon: 'warning',
+                showConfirmButton: true,
+                timer: 1500,
+                timerProgressBar: false,
+                background: '#e0f7fa',
+                customClass: {
+                    title: 'custom-title-class',
+                    text: 'custom-text-class'
+                }
             });
         }
 
     } catch (error) {
         console.log(error);
+        
         Swal.fire({
-            title: "Error",
-            text: "Error de conexión con el servidor",
-            icon: "error"
+            title: '¡Error de conexión!',
+            text: 'No se pudo conectar con el servidor',
+            icon: 'error',
+            showConfirmButton: true,
+            background: '#e0f7fa',
+            customClass: {
+                title: 'custom-title-class',
+                text: 'custom-text-class'
+            }
         });
-    } finally {
-        BtnIniciar.disabled = false;
     }
+
+    BtnIniciar.disabled = false;
 }
 
 FormLogin.addEventListener('submit', login);

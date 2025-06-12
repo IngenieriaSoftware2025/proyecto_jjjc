@@ -13,7 +13,7 @@ class InventarioCelular extends ActiveRecord {
         'invent_cantidad_disponible',
         'invent_descripcion',
         'invent_estado',
-        'invent_fecha_ingreso'
+        //'invent_fecha_ingreso'
     ];
 
     public static $idTabla = 'invent_id';
