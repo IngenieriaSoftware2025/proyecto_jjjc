@@ -175,3 +175,52 @@ CREATE TABLE ordenes_reparacion (
 );
 
 
+--CREAR USUARIO 
+INSERT INTO usuario (
+    usuario_nom1, 
+    usuario_nom2, 
+    usuario_ape1, 
+    usuario_ape2, 
+    usuario_tel, 
+    usuario_direc, 
+    usuario_dpi, 
+    usuario_correo, 
+    usuario_contra, 
+    usuario_token, 
+    usuario_situacion
+) 
+VALUES (
+    'ADMINISTRADOR', 
+    'PRINCIPAL', 
+    'SISTEMA', 
+    'VOLA', 
+    87654321, 
+    'ZONA 10, GUATEMALA CITY', 
+    '8888777766665', 
+    'admin@vola.com', 
+    '$2y$10$LefGkqLJy.8Jf7e17mXfcet5iiMu52TxINTy6U3bpAbp.lP2wuU22', 
+    'admin_vola_token_2025', 
+    1
+);
+
+-- 2. VER QUÉ ID SE LE ASIGNÓ AL NUEVO USUARIO
+SELECT usuario_id, usuario_nom1, usuario_correo 
+FROM usuario 
+WHERE usuario_correo = 'admin@vola.com';
+
+-- 3. ASIGNAR PERMISOS AL NUEVO USUARIO
+-- AJUSTA EL usuario_id SEGÚN EL RESULTADO DEL SELECT ANTERIOR
+-- CAmbiar los dos 29 por el ID nuevo del usuario por ejemplo (1):
+INSERT INTO asig_permisos (
+    asignacion_usuario_id, 
+    asignacion_app_id, 
+    asignacion_permiso_id, 
+    asignacion_usuario_asigno, 
+    asignacion_motivo, 
+    asignacion_situacion
+) 
+VALUES (29, 2, 2, 29, 'Usuario administrador principal del sistema VOLA', 1);
+
+
+--Usuario: admin@vola.com
+-- Contraseña: 12345678
