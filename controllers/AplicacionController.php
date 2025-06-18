@@ -219,7 +219,7 @@ class AplicacionController extends ActiveRecord
         }
         
         try {
-            // Cambiar situación a 0 (eliminación lógica) - NO eliminar físicamente
+            // Cambiar situación a 0  NO eliminar físicamente
             $sql = "UPDATE aplicacion SET app_situacion = 0 WHERE app_id = $id AND app_situacion = 1";
             $resultado = Aplicacion::getDB()->exec($sql);
             

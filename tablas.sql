@@ -168,6 +168,7 @@ CREATE TABLE ordenes_reparacion (
     orden_fecha_finalizacion DATETIME YEAR TO SECOND,
     orden_estado VARCHAR(20) DEFAULT 'RECIBIDO', -- RECIBIDO, ASIGNADO, EN_PROCESO, TERMINADO, ENTREGADO
     orden_observaciones VARCHAR(250),
+    orden_situacion SMALLINT DEFAULT 1,
     FOREIGN KEY (orden_cli_id) REFERENCES clientes(cli_id),--TABLA CLIENTES
     FOREIGN KEY (orden_empleado_id) REFERENCES empleados(empleado_id),--TABLA EMPLEADOS
     FOREIGN KEY (orden_serv_id) REFERENCES tipo_servicio(serv_id)--TABLA TIPO_SERVICIO

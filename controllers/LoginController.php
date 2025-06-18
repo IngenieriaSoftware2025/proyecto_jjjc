@@ -11,7 +11,6 @@ class LoginController extends ActiveRecord
 
     public static function renderizarPagina(Router $router)
     {
-        // No iniciar sesión aquí, dejar que lo hagan las funciones
         if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             header('Location: /proyecto_jjjc/inicio');
             exit;
@@ -47,7 +46,6 @@ class LoginController extends ActiveRecord
 
             $queryExisteUser = "SELECT usuario_id, usuario_nom1, usuario_nom2, usuario_ape1, usuario_ape2, usuario_contra, usuario_correo, usuario_dpi FROM usuario WHERE usuario_correo = '$correo' AND usuario_situacion = 1";
 
-            // Usar try-catch para manejar errores de la consulta
             try {
                 $existeUsuario = ActiveRecord::fetchFirst($queryExisteUser);
             } catch (Exception $dbError) {
@@ -60,7 +58,7 @@ class LoginController extends ActiveRecord
                 $passDB = $existeUsuario['usuario_contra'];
 
                 if (password_verify($contrasena, $passDB)) {
-                    // Guardar información del usuario en la sesión (sin iniciar sesión porque ya está iniciada)
+                    // Guardar información del usuario en la sesión 
                     $nombreCompleto = trim($existeUsuario['usuario_nom1'] . ' ' . $existeUsuario['usuario_nom2'] . ' ' . $existeUsuario['usuario_ape1'] . ' ' . $existeUsuario['usuario_ape2']);
                     
                     $_SESSION['user'] = $nombreCompleto;

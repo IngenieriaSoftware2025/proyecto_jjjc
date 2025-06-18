@@ -230,7 +230,7 @@ class EmpleadoController extends ActiveRecord
         }
         
         try {
-            // Cambiar estado a 0 (eliminación lógica) - NO eliminar físicamente
+            // Cambiar estado a 0  - NO eliminar físicamente
             $sql = "UPDATE empleados SET empleado_estado = 0 WHERE empleado_id = $id AND empleado_estado = 1";
             $resultado = Empleado::getDB()->exec($sql);
             

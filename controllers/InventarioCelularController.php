@@ -211,7 +211,7 @@ class InventarioCelularController extends ActiveRecord
         $_POST['invent_cantidad_disponible'] = filter_var($_POST['invent_cantidad_disponible'], FILTER_VALIDATE_INT);
         $_POST['invent_descripcion'] = ucfirst(strtolower(trim(htmlspecialchars($_POST['invent_descripcion']))));
         
-        // Verificar si el modelo ya existe para esa marca (excluyendo el actual)
+        // Verificar si el modelo ya existe para esa marca 
         $productoExistente = InventarioCelular::fetchFirst("SELECT * FROM invent_cel WHERE invent_modelo = '{$_POST['invent_modelo']}' AND invent_marca_id = {$_POST['invent_marca_id']} AND invent_id != {$_POST['invent_id']}");
         if ($productoExistente) {
             http_response_code(400);
@@ -274,7 +274,7 @@ class InventarioCelularController extends ActiveRecord
         }
         
         try {
-            // Cambiar estado a 0 (eliminación lógica) - NO eliminar físicamente
+            // Cambiar estado a 0  NO eliminar físicamente
             $sql = "UPDATE invent_cel SET invent_estado = 0 WHERE invent_id = $id AND invent_estado = 1";
             $resultado = InventarioCelular::getDB()->exec($sql);
             

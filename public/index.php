@@ -10,16 +10,19 @@ use Controllers\AplicacionController;
 use Controllers\AsigPermisosController;
 use Controllers\ClienteController;
 use Controllers\EmpleadoController;
+use Controllers\EstadisticasController;
 use Controllers\InventarioCelularController;
 use Controllers\MarcaCelularController;
 use Controllers\TipoServicioController;
+use Controllers\VentaController;
+use Controllers\ReparacionController; 
 
 $router = new Router();
 $router->setBaseURL('/' . $_ENV['APP_NAME']);
 
 // RUTAS PRINCIPALES
-$router->get('/', [AppController::class,'index']);          // Ruta raíz - decide si login o inicio
-$router->get('/inicio', [AppController::class,'inicio']);   // Ruta específica de inicio
+$router->get('/', [AppController::class,'index']);
+$router->get('/inicio', [AppController::class,'inicio']);
 
 // RUTAS LOGIN
 $router->get('/login', [LoginController::class,'renderizarPagina']);
@@ -92,6 +95,31 @@ $router->post('/servicios/guardar', [TipoServicioController::class,'guardarAPI']
 $router->post('/servicios/buscar', [TipoServicioController::class,'buscarAPI']);
 $router->post('/servicios/modificar', [TipoServicioController::class,'modificarAPI']);
 $router->get('/servicios/eliminar', [TipoServicioController::class,'eliminarAPI']);
+
+// RUTAS PARA VENTAS
+$router->get('/ventas', [VentaController::class,'renderizarPagina']);
+$router->post('/ventas/guardar', [VentaController::class,'guardarAPI']);
+$router->post('/ventas/buscar', [VentaController::class,'buscarAPI']);
+$router->post('/ventas/clientes', [VentaController::class,'obtenerClientesAPI']);
+$router->post('/ventas/productos', [VentaController::class,'obtenerProductosAPI']);
+$router->get('/ventas/detalle', [VentaController::class,'detalleVentaAPI']);
+
+// RUTAS PARA REPARACIONES
+$router->get('/reparaciones', [ReparacionController::class,'renderizarPagina']);
+$router->post('/reparaciones/guardar', [ReparacionController::class,'guardarAPI']);
+$router->post('/reparaciones/buscar', [ReparacionController::class,'buscarAPI']);
+$router->post('/reparaciones/modificar', [ReparacionController::class,'modificarAPI']);
+$router->get('/reparaciones/eliminar', [ReparacionController::class,'eliminarAPI']);
+$router->post('/reparaciones/clientes', [ReparacionController::class,'obtenerClientesAPI']);
+$router->post('/reparaciones/empleados', [ReparacionController::class,'obtenerEmpleadosAPI']);
+$router->post('/reparaciones/servicios', [ReparacionController::class,'obtenerServiciosAPI']);
+$router->post('/reparaciones/estados', [ReparacionController::class,'obtenerEstadosAPI']);
+
+
+// RUTAS PARA ESTADÍSTICAS
+$router->get('/estadisticas', [EstadisticasController::class,'renderizarPagina']);
+$router->get('/estadisticas/buscar', [EstadisticasController::class,'buscarAPI']);
+$router->get('/estadisticas/resumen', [EstadisticasController::class,'resumenVentasAPI']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

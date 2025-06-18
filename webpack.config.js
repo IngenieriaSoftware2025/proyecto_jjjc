@@ -14,7 +14,10 @@ module.exports = {
     'js/login/index' : './src/js/login/index.js',
     'js/empleados/index' : './src/js/empleados/index.js',
     'js/servicios/index' : './src/js/servicios/index.js',
-    'js/asigPermisos/index' : './src/js/asigPermisos/index.js'
+    'js/asigPermisos/index' : './src/js/asigPermisos/index.js',
+    'js/ventas/index' : './src/js/ventas/index.js',
+    'js/reparaciones/index' : './src/js/reparaciones/index.js',
+    'js/estadisticas/index' : './src/js/estadisticas/index.js'
 
   },
   output: {

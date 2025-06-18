@@ -414,10 +414,6 @@
                         <i class="bi bi-plus-circle"></i>
                         Nueva Venta
                     </a>
-                    <a href="/proyecto_jjjc/historial-ventas" class="enlace-submenu">
-                        <i class="bi bi-clock-history"></i>
-                        Historial de Ventas
-                    </a>
                     <a href="/proyecto_jjjc/reparaciones" class="enlace-submenu">
                         <i class="bi bi-wrench"></i>
                         Órdenes de Reparación
@@ -474,15 +470,7 @@
                 <div class="submenu" id="menuReportes">
                     <a href="/proyecto_jjjc/estadisticas" class="enlace-submenu">
                         <i class="bi bi-pie-chart"></i>
-                        Dashboard
-                    </a>
-                    <a href="/proyecto_jjjc/reportes-ventas" class="enlace-submenu">
-                        <i class="bi bi-file-earmark-bar-graph"></i>
-                        Reporte de Ventas
-                    </a>
-                    <a href="/proyecto_jjjc/reportes-inventario" class="enlace-submenu">
-                        <i class="bi bi-boxes"></i>
-                        Reporte de Inventario
+                        Estadisticas
                     </a>
                 </div>
             </div>
