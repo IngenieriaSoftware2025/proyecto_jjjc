@@ -174,6 +174,15 @@ CREATE TABLE ordenes_reparacion (
     FOREIGN KEY (orden_serv_id) REFERENCES tipo_servicio(serv_id)--TABLA TIPO_SERVICIO
 );
 
+--Crear APP
+INSERT INTO aplicacion (app_nombre_largo, app_nombre_medium, app_nombre_corto, app_situacion) 
+VALUES ('Sistema Celulares JJJC', 'Celulares JJJC', 'CELULARES', 1);
+
+--Crear Permsio ADMIN
+INSERT INTO permiso (permiso_app_id, permiso_nombre, permiso_clave, permiso_desc, permiso_situacion) 
+VALUES (1, 'Administrador', 'ADMIN', 'Acceso total al sistema', 1);
+
+
 
 --CREAR USUARIO 
 INSERT INTO usuario (
